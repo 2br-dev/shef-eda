@@ -11,6 +11,7 @@ use RS\Config\Loader as ConfigLoader;
 use RS\Event\Manager as EventManager;
 use RS\Exception;
 use RS\Module\AbstractModel\EntityList;
+use RS\Orm\AbstractObject;
 use RS\Orm\Request as OrmRequest;
 use RS\Site\Manager as SiteManager;
 use Shop\Model\Orm\Delivery;
@@ -24,7 +25,8 @@ use Users\Model\Orm\UserInGroup;
  */
 class DeliveryApi extends EntityList
 {
-    protected static $types;
+    protected static
+        $types;
 
     function __construct()
     {
@@ -40,10 +42,10 @@ class DeliveryApi extends EntityList
     /**
      * Возвращает Имеющиеся в системе обработчики типов доставок.
      *
-     * @return DeliveryType\AbstractType[]
+     * @return array
      * @throws Exception
      */
-    public static function getTypes()
+    function getTypes()
     {
         if (self::$types === null) {
             $event_result = EventManager::fire('delivery.gettypes', array());
@@ -63,12 +65,13 @@ class DeliveryApi extends EntityList
     /**
      * Возвращает массив ключ => название типа доставки
      *
-     * @return string[]
+     * @return array
      */
     public static function getTypesAssoc()
     {
+        $_this = new self();
         $result = array();
-        foreach (self::getTypes() as $key => $object) {
+        foreach ($_this->getTypes() as $key => $object) {
             $result[$key] = $object->getTitle();
         }
         return $result;
@@ -151,17 +154,11 @@ class DeliveryApi extends EntityList
     /**
      * Возвращает массив классов отвечающих за самовывоз в системе
      *
-     * @return string[]
+     * @return array
      */
     public static function getPickupPointClasses()
     {
-        $classes = array();
-        foreach (self::getTypes() as $short_name => $delivery_type) {
-            if ($delivery_type->isMyselfDelivery()) {
-                $classes[] = $short_name;
-            }
-        }
-        return $classes;
+        return array('myself');
     }
 
     /**
@@ -215,7 +212,7 @@ class DeliveryApi extends EntityList
      * Если передать объект заказа, то вернутся пункты подходящие под данный заказ
      *
      * @param \Shop\Model\Orm\Order $order - объект заказа
-     * @return Delivery[]
+     * @return AbstractObject[]
      */
     public static function getPickUpPoints($order = null)
     {

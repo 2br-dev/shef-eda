@@ -2,7 +2,7 @@
 <signatures>
   <file>
     <path>config/changelog.txt</path>
-    <sign>8195d22c05e59c05c4b5c58283afd4d94d88cb00</sign>
+    <sign>4280e7c9ddaa26cf5c4b63888f2e85bcdbfe15a8</sign>
   </file>
   <file>
     <path>config/file.inc.php</path>
@@ -14,7 +14,7 @@
   </file>
   <file>
     <path>config/module.xml</path>
-    <sign>57ab8efee3495c06f891ae4dbb2f66b0a0aae295</sign>
+    <sign>28f38508968473a91cf8cf21b099d22eb27d5ece</sign>
   </file>
   <file>
     <path>config/modulerights.inc.php</path>
@@ -70,7 +70,7 @@
   </file>
   <file>
     <path>model/importers/offer.inc.php</path>
-    <sign>d679ee1ef7c69e2a052956e66e1f8112237a10f2</sign>
+    <sign>1add1112d703ebc184cb4433d23d9cb7541d98ac</sign>
   </file>
   <file>
     <path>model/importers/pricetype.inc.php</path>
@@ -136,5 +136,5 @@
     <path>view/js/exchange.js</path>
     <sign>6601935a8287c2a0501c100241a6f85d26ddcdb2</sign>
   </file>
-  <masterSign>6a77cf7d622f07668f01d138015054b6ce9df257cbfcdb6640b43e0afbbd007bca758e731eb90c62f75654452b342f98a2cddefd0b64680b4fe65f88c4469a201b7d3c469008cc63de473b8d68642baddf3f7865bf4f242d1827002e6907ddef402836d8aec738b52618062d90678d8707c67d7e53c3e02b9bd40c506747cb7e</masterSign>
+  <masterSign>08de8db1ba71d011ea558ea82518122d6fdd70c87e6d6099526abeaa6362b0774be2b1938fe910d4d3ac2d948466282a69a713e10fde5cb063439462ae80a52eed9a39fe0cc3bd88c44b37a8a1483d317edac24d6614d6cfb27f5bca13ec6ddfd8394b2363743fb00ba3389cba45a821e9f294afe22d3d4a1dbebce5ff9271b8</masterSign>
 </signatures>

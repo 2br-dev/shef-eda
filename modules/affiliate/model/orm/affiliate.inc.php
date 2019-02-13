@@ -14,14 +14,14 @@ use RS\Orm\Request as OrmRequest;
 use RS\Orm\Request;
 use RS\Orm\Type;
 use RS\Router\Manager as RouterManager;
-use RS\Site\Manager as SiteManager;
 
 /**
  * Объект - филиал
  */
 class Affiliate extends OrmObject
 {
-    protected static $table = 'affiliate';
+    protected static
+        $table = 'affiliate';
 
     function _init()
     {
@@ -150,7 +150,6 @@ class Affiliate extends OrmObject
      * Выполняется перед сохранением объекта
      *
      * @param string $flag
-     * @return void
      */
     function beforeWrite($flag)
     {
@@ -166,7 +165,8 @@ class Affiliate extends OrmObject
                     'parent_id' => $this['parent_id'],
                 ));
 
-            $this['sortn'] = $q->exec()->getOneField('max_sort', -1) + 1;
+            $this['sortn'] = $q->exec()
+                    ->getOneField('max_sort', -1) + 1;
         }
     }
 
@@ -216,7 +216,6 @@ class Affiliate extends OrmObject
      */
     function cloneSelf()
     {
-        /** @var self $clone */
         $clone = parent::cloneSelf();
         unset($clone['alias']);
         return $clone;
@@ -226,7 +225,7 @@ class Affiliate extends OrmObject
      * Возвращает список ID связанных с филиалом складов,
      * а также складов связанных со всеми филиалами
      *
-     * @return int[]
+     * @return WareHouse[]
      */
     function getLinkedWarehouses()
     {
@@ -234,7 +233,7 @@ class Affiliate extends OrmObject
             ->select('id')
             ->from(new WareHouse())
             ->where(array(
-                'site_id' => SiteManager::getSiteId()
+                'site_id' => \RS\Site\Manager::getSiteId()
             ))
             ->whereIn('affiliate_id', array(0, $this['id']))
             ->exec()->fetchSelected(null, 'id');

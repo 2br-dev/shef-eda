@@ -2,7 +2,7 @@
 {addcss file="{$mod_css}property.css" basepath="root"}
 {addjs file="{$mod_js}meproperty.js" basepath="root"}
 
-<table class="otable">
+<table class="otable">                                              
     <tr class="editrow">
         <td class="ochk" width="20">
             <input id="me-product-properties" title="{t}Отметьте, чтобы применить изменения по этому полю{/t}" type="checkbox" class="doedit" name="doedit[]" value="{$elem.___property_->getName()}" {if in_array($elem.___property_->getName(), $param.doedit)}checked{/if}></td>
@@ -17,9 +17,9 @@
                         <i class="zmdi zmdi-plus m-r-5"></i>
                         <span>{t}Добавить характеристику{/t}</span>
                     </a>
-                    {include file="meproperty_form.tpl" value_types=$field->callPropertyFunction('getPropertyItemAllowTypeData')}
+                    {include file="meproperty_form.tpl"}
                 </div>
-            </div>
+            </div>        
         </td>
     </tr>
 </table>

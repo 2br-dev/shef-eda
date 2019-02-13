@@ -3,7 +3,7 @@
     <defaultValues>
         <name multilanguage="true">Обмен данными</name>
         <description multilanguage="true">Позволяет организовывать импорт товаров, экспорт заказов</description>
-        <version>4.0.9</version>
+        <version>4.0.8</version>
         <author>ReadyScript lab.</author>
         <is_system>1</is_system>
         <file_limit>204800</file_limit>

@@ -2,7 +2,7 @@
 <signatures>
   <file>
     <path>config/changelog.txt</path>
-    <sign>20bc77d483be65404763522b0cf7bccaf1a38246</sign>
+    <sign>700453c323188578874aca034c77e44c36cfd7ff</sign>
   </file>
   <file>
     <path>config/demo/brand.csv</path>
@@ -2990,7 +2990,7 @@
   </file>
   <file>
     <path>config/handlers.inc.php</path>
-    <sign>6342e3578740ac19ba6412f0f8b7012744c00466</sign>
+    <sign>2e5c0d46c5585a14eb8ef2a0dfb31580dbbaf789</sign>
   </file>
   <file>
     <path>config/install.inc.php</path>
@@ -2998,7 +2998,7 @@
   </file>
   <file>
     <path>config/module.xml</path>
-    <sign>b046c78cbd584cf2bd303922b8a1b430271f0976</sign>
+    <sign>730ab8bc6b5af039f2fda71f28f268a15a5b17a6</sign>
   </file>
   <file>
     <path>config/patches.inc.php</path>
@@ -3514,7 +3514,7 @@
   </file>
   <file>
     <path>model/orm/offer.inc.php</path>
-    <sign>56586c84c2313f99f03ac82ba8b1a8841910034d</sign>
+    <sign>20c7aaf5022aa56dce2053483e377b68c95fbb09</sign>
   </file>
   <file>
     <path>model/orm/oneclickitem.inc.php</path>
@@ -3522,7 +3522,7 @@
   </file>
   <file>
     <path>model/orm/product.inc.php</path>
-    <sign>a148a41667ddad13222a2c4ba41e3ddbd779c49a</sign>
+    <sign>b4a4eccd515b0df67208d4614e26c1addd71da1b</sign>
   </file>
   <file>
     <path>model/orm/property/dir.inc.php</path>
@@ -3970,7 +3970,7 @@
   </file>
   <file>
     <path>view/form/offer/stock_num.tpl</path>
-    <sign>4d7ba699143d3a389ce7784ac822863c3087b1bb</sign>
+    <sign>32e3fae18389ac5e904749c066e0aed8c9a19b2d</sign>
   </file>
   <file>
     <path>view/form/ormtype/product_dialog.tpl</path>
@@ -3998,7 +3998,7 @@
   </file>
   <file>
     <path>view/form/product/menum.tpl</path>
-    <sign>eea3fa70fe218865437ba944d6be9b0d89e39989</sign>
+    <sign>91fb968ef540db8a6af6d2010fd0ceb929a76ec8</sign>
   </file>
   <file>
     <path>view/form/product/meoffers.tpl</path>
@@ -4006,7 +4006,7 @@
   </file>
   <file>
     <path>view/form/product/meproperties.tpl</path>
-    <sign>bc6341eff4d009ce07e43524b417b4f8df4be603</sign>
+    <sign>ff2f49d377b66926652c76f73bfaee1a784b157b</sign>
   </file>
   <file>
     <path>view/form/product/merecomended.tpl</path>
@@ -4030,7 +4030,7 @@
   </file>
   <file>
     <path>view/form/product/photo/form_product.tpl</path>
-    <sign>8a59cad764e80a146c33ed419c3cb180c084f7fe</sign>
+    <sign>d80cbd879d620610b4a7e5c5c10312716aa64b87</sign>
   </file>
   <file>
     <path>view/form/product/photos.tpl</path>
@@ -4038,7 +4038,7 @@
   </file>
   <file>
     <path>view/form/product/properties.tpl</path>
-    <sign>444357977a2e22f0936bef9c47df34db4358b85c</sign>
+    <sign>803107f14fd3b1330786ad4a6558ee5772bd3622</sign>
   </file>
   <file>
     <path>view/form/product/recomended.tpl</path>
@@ -4262,7 +4262,7 @@
   </file>
   <file>
     <path>view/property_form.tpl</path>
-    <sign>3d8a46e5e0ca970af3746fe6947c639a788a9021</sign>
+    <sign>1b2cb7efd3837f550b80024d17d7f124db73f194</sign>
   </file>
   <file>
     <path>view/property_full_list.tpl</path>
@@ -4296,5 +4296,5 @@
     <path>view/widget/watchnow.tpl</path>
     <sign>44d4c0a6abf8d2f50f437fc6c9b21e6f98781228</sign>
   </file>
-  <masterSign>1b57008c79d8d1a4af7c8df498d5ecb10aa26f547adde3cb0536cffd1b6498c7d5ea57c331f9f5274c6e55b7403b4020e1a25ad9a33a5b6d0fab5f6b6c68fafd28d14772bc860eb31ddbf6e960f45fa0a2fc422eaeb34778fd7c97508ca5166871d7bb3ff1dbdeb510df1900f419b885ae3f35b081dfe27240c058bcbc300f19</masterSign>
+  <masterSign>8cace72441c1ab7bd1e906c5f91918b6b15efb50275119cb733a2a53d871b736686175dc3d57b580b396350e9ab3df3baab2e98063ad3df29538f921529ceb03143ee07c5779da3981ed90741c924ba3280627a3a476039932470cd922273bc89087b07141593264013d5eaa3e09cda664b643adb1f1d0ac17e67ba8dda4ac7d</masterSign>
 </signatures>

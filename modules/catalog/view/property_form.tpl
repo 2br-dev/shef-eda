@@ -1,3 +1,4 @@
+{static_call var="value_types" callback=['\Catalog\Model\Orm\Property\Item', 'getAllowTypeData']}
 <div class="property-form" style="display:none">
     <table width="100%" class="property-table">
             <tr class="p-proplist-block">
@@ -19,7 +20,7 @@
                     <br>
                     <span class="fieldhelp">{t}Тематическая группа характеристики{/t}</span>
                 </td>
-            </tr>
+            </tr>        
             <tr class="p-title-block">
                 <td class="key">{t}Название{/t}</td>
                 <td><input type="text" class="p-title"><div class="field-error top-corner" data-field="title"></div><br>
@@ -30,7 +31,7 @@
                 <td class="key">{t}Тип{/t}</td>
                 <td><select class="p-type">
                     {foreach $value_types as $key => $type}
-                        <option value="{$key}" data-is-list="{$type.is_list|string_format:"%d"}">{$type.title}</option>
+                    <option value="{$key}" data-is-list="{$type.is_list|string_format:"%d"}">{$type.title}</option>
                     {/foreach}
                 </select></td>
             </tr>
@@ -39,15 +40,15 @@
                 <td><input type="text" class="p-unit" style="width:100px"><br>
                     <span class="fieldhelp">{t}Будет отображаться после значения (до 50 знаков){/t}</span>
                 </td>
-            </tr>
+            </tr>        
             <tr class="p-value-block">
                 <td class="key">{t}Значение{/t}</td>
                 <td>
                     <span class="p-val-block">
                         <input type="text" class="p-val">
-                    </span>
+                    </span>                    
                 </td>
-            </tr>
+            </tr>                            
             <tr class="p-new-value-block">
                 <td class="key">{t}Добавить значение{/t}</td>
                 <td>
@@ -55,15 +56,16 @@
                         <input type="text" class="p-new-value" placeholder="{t}новое значение{/t}">
                         <a class="p-add-new-value">{t}добавить{/t}</a>
                         <br><span class="fieldhelp">{t}Полное редактирование всех свойств значений доступно в разделе {/t}<a href="{$router->getAdminUrl(false, [], 'catalog-propctrl')}" target="_blank">{t}Характеристики{/t}</a></span>
-                    </div>
+                    </div>                    
                 </td>
-            </tr>
+            </tr>                            
+            
             
             <tr>
                 <td></td>
                 <td>
                     <a class="btn btn-success add disabled">{t}Добавить{/t}</a>
-                    <a class="close">{t}свернуть{/t}</a>
+                    <a class="close">{t}свернуть{/t}</a>                                    
                 </td>
             </tr>
         </table>
@@ -83,6 +85,6 @@
                 <a class="btn btn-success add-some disabled">{t}Добавить{/t}</a>
                 <a class="close">{t}свернуть{/t}</a>
             </td>
-        </tr>
+        </tr>                        
     </table>
 </div>

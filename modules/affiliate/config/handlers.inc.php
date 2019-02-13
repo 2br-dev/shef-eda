@@ -115,7 +115,12 @@ class Handlers extends HandlerAbstract
             if ($affiliate['id']) {
                 /** @var \Shop\Model\Orm\Order $order */
                 $order = $params['orm'];
-                $order->addExtraInfoLine(t('Выбранный город при оформлении'), $affiliate['title'], array('id' => $affiliate['id']), 'affiliate');
+                $order->addExtraInfoLine(
+                    t('Выбранный город при оформлении'),
+                    $affiliate['title'],
+                    array('id' => $affiliate['id']),
+                    'affiliate'
+                );
             }
         }
     }

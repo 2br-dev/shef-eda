@@ -66,21 +66,17 @@
                     'sch', '', 'y', '', 'e', 'yu', 'ya'];
 
                 var result = '', char;
-                var hyphen = false;
                 for(var i=0; i<text.length; i++) {
                     char = text.toLowerCase().charAt(i);
 
                     if (char.match(/[a-z0-9]/gi)) {
                         result = result + char;
-                        hyphen = false;
                     } else {
                         var pos = rus.indexOf(char);
                         if (pos > -1) {
                             result = result + eng[pos];
-                            hyphen = false;
-                        } else if (!hyphen) {
-                            result = result + '-';
-                            hyphen = true;
+                        } else {
+                            result = result + '-'
                         }
                     }
                 }

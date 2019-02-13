@@ -18,7 +18,7 @@ abstract class AbstractSetup
         $INSTALLED,
         
         //Общие параметры
-        $VERSION          = '4.0.25',  //Текущая версия ядра
+        $VERSION          = '4.0.24',  //Текущая версия ядра
         $CLASS_EXT        = 'inc.php',    //Расширение файлов с классами
         $CUSTOM_CLASS_EXT = 'my.inc.php', //Расширение файлов с перегруженными классами
         $PATH,   //Путь к корневому каталогу системы = DOCUMENT_ROOT + FOLDER

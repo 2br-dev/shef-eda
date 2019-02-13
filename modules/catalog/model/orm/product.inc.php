@@ -15,7 +15,6 @@ use Catalog\Model\Dirapi;
 use Catalog\Model\FavoriteApi;
 use Catalog\Model\MultiOfferLevelApi;
 use Catalog\Model\OfferApi;
-use Catalog\Model\Orm\Property\Item as PropertyItem;
 use Catalog\Model\ProductDimensions;
 use Catalog\Model\PropertyApi;
 use Catalog\Model\VirtualMultiOffersApi;
@@ -24,11 +23,9 @@ use Photo\Model\Orm\Image as PhotoImage;
 use Photo\Model\PhotoApi;
 use RS\Config\Loader as ConfigLoader;
 use RS\Config\Loader;
-use RS\Db\Adapter as DbAdapter;
 use RS\Debug\Action as DebugAction;
 use RS\Event\Manager as EventManager;
 use RS\Helper\CustomView;
-use RS\Helper\Tools as HelperTools;
 use RS\Orm\OrmObject;
 use RS\Orm\Request as OrmRequest;
 use RS\Orm\Request;
@@ -72,7 +69,6 @@ class Product extends OrmObject
             $keep_spec_dirs       = false, // флаг отвечает за сохранение связей с категориями
             $cache_visible_property,
             $cache_amount_step,
-            $cache_warehouse_stick,
             $user_cost,
             $stock = null, //Остатки по складам  
             $full_stock = null, //Остатки по складам обобщённые 
@@ -141,10 +137,7 @@ class Product extends OrmObject
                         'mevisible' => true,
                         'meTemplate' =>  '%catalog%/form/product/menum.tpl',
                         'description' => t('Доступно'),
-                        'getWarehousesList' => function () {
-                            return WareHouseApi::getWarehousesList();
-                        },
-                    )),
+                            )),
                     'dynamic_num' => new Type\Decimal(array(
                         'description' => t('Динамический остаток, заполняется во время выполнения'),
                         'maxLength' => 11,
@@ -372,14 +365,16 @@ class Product extends OrmObject
                         'default' => 'commodity'
                     )),
             t('Характеристики'),
-                    '_property_' => new Type\UserTemplate('%catalog%/form/product/properties.tpl', '%catalog%/form/product/meproperties.tpl', array(
-                        'meVisible' => true,
-                        'getPropertyItemAllowTypeData' => function() {
-                            return PropertyItem::getAllowTypeData();
-                        },
+                    '_property_' => new Type\UserTemplate('%catalog%/form/product/properties.tpl', 
+                                                          '%catalog%/form/product/meproperties.tpl', 
+                    array(
+                        'meVisible' => true
                     )),
+                    
             t('Комплектации'),
-                    '_offers_' => new Type\UserTemplate('%catalog%/form/product/offers.tpl', '%catalog%/form/product/meoffers.tpl', array(
+                    '_offers_' => new Type\UserTemplate('%catalog%/form/product/offers.tpl',
+                                                        '%catalog%/form/product/meoffers.tpl',
+                    array(
                         'meVisible' => true,
                         'getDefaultCurrency' => function() {
                             return CurrencyApi::getBaseCurrency();
@@ -401,6 +396,7 @@ class Product extends OrmObject
                         'description' => t('Виртуальные многомерные комрлектации'),
                         'visible' => false
                     )),
+                    
             t('Мета-тэги'),
                     'meta_title' => new Type\Varchar(array(
                         'maxLength' => '1000',
@@ -416,15 +412,19 @@ class Product extends OrmObject
                         'description' => t('SEO Описание(description)'),
                     )),
             t('Рекомендуемые товары'),
-                '_recomended_' => new Type\UserTemplate('%catalog%/form/product/recomended.tpl', '%catalog%/form/product/merecomended.tpl', array(
-                    'meVisible' => true  //Видимость при мультиредактировании
-                )),
+                    '_recomended_' => new Type\UserTemplate(
+                                        '%catalog%/form/product/recomended.tpl',
+                                        '%catalog%/form/product/merecomended.tpl',array(
+                        'meVisible' => true  //Видимость при мультиредактировании
+                    )),
             t('Сопутствующие товары'),
-                '_concomitant_' => new Type\UserTemplate('%catalog%/form/product/concomitant.tpl', '%catalog%/form/product/meconcomitant.tpl', array(
-                    'meVisible' => true  //Видимость при мультиредактировании
-                )),
+                    '_concomitant_' => new Type\UserTemplate(
+                                        '%catalog%/form/product/concomitant.tpl',
+                                        '%catalog%/form/product/meconcomitant.tpl',array(
+                        'meVisible' => true  //Видимость при мультиредактировании
+                    )),
             t('Фото'),
-                '_photo_' => new Type\UserTemplate('%catalog%/form/product/photos.tpl'),
+                    '_photo_' => new Type\UserTemplate('%catalog%/form/product/photos.tpl'),
         ));
 
         //Включаем в форму hidden поле id.
@@ -637,13 +637,13 @@ class Product extends OrmObject
                 $sql1 .= ' AND dir_id NOT IN ('.implode(',', $spec_dirs).')';
             }
             $sql2 = "INSERT IGNORE INTO " . $xdir->_getTable() . " (product_id, dir_id) VALUES" . implode(',', $pairs);
-            DbAdapter::sqlExec($sql1);
-            DbAdapter::sqlExec($sql2);
+            \RS\Db\Adapter::sqlExec($sql1);
+            \RS\Db\Adapter::sqlExec($sql2);
         }
 
         //Сохраняем цены
         if ($this->isModified('excost') || $this->isModified('xcost')) {
-            OrmRequest::make()->delete()
+            \RS\Orm\Request::make()->delete()
                 ->from(new Xcost())
                 ->where(array(
                     'product_id' => $this['id']
@@ -856,7 +856,7 @@ class Product extends OrmObject
      * Добавляет к товару поле dynamic_num с остатком только на указанных складах.
      * После вызова данного метода fillOffers() бдет также добавлять dynamic_num к каждой комплектации
      *
-     * @param int[] $warehouse_ids
+     * @param integer[] $warehouse_ids
      */
     public function setWarehousesForDynamicNum($warehouse_ids)
     {
@@ -1281,7 +1281,7 @@ class Product extends OrmObject
             ->select('barcode')
             ->from(new Offer())
             ->where(array(
-                'product_id' => $this['id']
+                'product_id' => $this->id
             ))
             ->exec()
             ->fetchSelected(null,'barcode');
@@ -1304,7 +1304,7 @@ class Product extends OrmObject
      */
     function getSearchText()
     {
-        $config = ConfigLoader::byModule($this);
+        $config = \RS\Config\Loader::byModule($this);
         //Для поиска: Штрих-код, Краткое опиание, Характеристики, мета ключевые слова
         $properties = '';
         if (in_array('properties', $config['search_fields'])) {
@@ -1339,7 +1339,7 @@ class Product extends OrmObject
 		if (in_array('ofbarcodes', $config['search_fields'])) $text[] = $offersbarcodes; //Артикулы комплектаций      
 
 
-		$event_result = EventManager::fire('product.getsearchtext', array(
+		$event_result = \RS\Event\Manager::fire('product.getsearchtext', array(
             'text_parts' => $text,
             'product' => $this
         ));
@@ -1517,8 +1517,8 @@ class Product extends OrmObject
     */
     function hasCost()
     {
-        $cost = Xcost::loadByWhere(array('product_id' => $this['id']));
-        return (bool) $cost['product_id'];
+        $cost = Xcost::loadByWhere(array('product_id' => $this->id));
+        return (bool) $cost->product_id;
     }
 
     /**
@@ -1541,7 +1541,7 @@ class Product extends OrmObject
 
             if ($cost_id !== null && !is_numeric($cost_id)) { //Получаем id, если передано название цены
                 if (!isset(self::$cost_title_id[$cost_id])) {
-                    $cost_api = new CostApi();
+                    $cost_api = new \Catalog\Model\CostApi();
                     $cost_api->setFilter('title', $cost_id);
                     $cost = $cost_api->getFirst();
                     self::$cost_title_id[$cost_id] = $cost ? $cost['id'] : null;
@@ -1567,9 +1567,9 @@ class Product extends OrmObject
         }
 
         if (!$inBaseCurrency) {
-            $cost = CurrencyApi::applyCurrency($cost, $this['_currency']);
+            $cost = \Catalog\Model\CurrencyApi::applyCurrency($cost, $this['_currency']);
         }
-        return ($format) ? CustomView::cost($cost) : $cost;
+        return ($format) ? \RS\Helper\CustomView::cost($cost) : $cost;
     }
     
     /**
@@ -1582,7 +1582,7 @@ class Product extends OrmObject
     */
     function getOldCost($offer = null, $format = true, $inBaseCurrency = false)
     {
-        $old_cost_id = CostApi::getOldCostId();
+        $old_cost_id = \Catalog\Model\CostApi::getOldCostId();
         if ($old_cost_id) {
             return $this->getCost($old_cost_id, $offer, $format, $inBaseCurrency);
         }
@@ -1640,13 +1640,13 @@ class Product extends OrmObject
                     }
                 }
 
-                $cost_api = new CostApi();
+                $cost_api = new \Catalog\Model\CostApi();
                 $xcost = $cost_api->getCalculatedCostList($xcost);
             }
             $this->offer_xcost[$offer_key] = $xcost;
 
             //Отработаем событие, чтобы достать преобразовать данные
-            $event_result = EventManager::fire('product.getoffercost', array(
+            $event_result = \RS\Event\Manager::fire('product.getoffercost', array(
                 'offer_xcost' => $this->offer_xcost[$offer_key],
                 'offer' => isset($offer) ? $offer : array(),
                 'offer_key' => $offer_key,
@@ -1682,8 +1682,7 @@ class Product extends OrmObject
     */
     function getBaseCurrency()
     {
-        $base_currency = CurrencyApi::getBaseCurrency();
-        return $base_currency['stitle'];
+        return CurrencyApi::getBaseCurrency()->stitle;
     }
 
     /**
@@ -1694,7 +1693,7 @@ class Product extends OrmObject
     */
     function getUrl($absolute = false)
     {
-        return RouterManager::obj()->getUrl('catalog-front-product', array('id' => $this['_alias']), $absolute);
+        return \RS\Router\Manager::obj()->getUrl('catalog-front-product', array('id' => $this['_alias']), $absolute);
     }
 
     /**
@@ -1912,31 +1911,28 @@ class Product extends OrmObject
 
         return $this->getMainDir()->isHaveConcomitant();
     }
-
+    
     /**
-     * Возвращает заголовок МЕТА данных товара, если нет, то берёт из категорий
-     *
-     * @return string
-     */
+    * Возвращает заголовок МЕТА данных товара, если нет, то берёт из категорий
+    * 
+    */
     function getMetaTitle()
     {
-        if (!empty($this['meta_title'])) {
+        if (!empty($this['meta_title'])){
             return $this['meta_title'];
         }
-
+        
         //Попытаемся получить данные из категории
         $maindir = $this->getMainDir();
-        if (!empty($maindir['product_meta_title'])) {
+        if (!empty($maindir['product_meta_title'])){
             return $maindir['product_meta_title'];
         }
-
+        
         //Попытаемся получить данные по умолчанию из конфига модуля
-        $config = ConfigLoader::byModule($this);
-        if (!empty($config['default_product_meta_title'])) {
+        $config = \RS\Config\Loader::byModule($this);
+        if (!empty($config['default_product_meta_title'])){
             return $config['default_product_meta_title'];
         }
-
-        return '';
     }
 
     /**
@@ -1996,14 +1992,12 @@ class Product extends OrmObject
         }
             
         if (!empty($this['description'])){
-            return HelperTools::teaser(str_replace(array("\n", "\r"), ' ', strip_tags($this['description'])), 700);
+            return \RS\Helper\Tools::teaser(str_replace(array("\n", "\r"), ' ', strip_tags($this['description'])), 700);
         }
             
         if (!empty($this['title'])){
             return $this['title'];
-        }
-
-        return '';
+        }  
     }
 
     /**
@@ -2027,8 +2021,10 @@ class Product extends OrmObject
     function getBarCode($offer)
     {
         $this->fillOffers();
-        if (!empty($offer) && $this['offers']['use'] && isset($this['offers']['items'][$offer])) {
-            return $this['offers']['items'][$offer]['barcode'];
+        if (!empty($offer) && $this['offers']['use']) {
+            if (isset($this['offers']['items'][$offer])) {
+                return $this['offers']['items'][$offer]['barcode'];
+            }
         } else {
             return $this['barcode'];
         }
@@ -2139,7 +2135,7 @@ class Product extends OrmObject
     public function getShortDescription($max_len = 300)
     {
         $text = !empty($this['short_description']) ? $this['short_description'] : $this['description'];
-        return HelperTools::teaser($text, $max_len, false);
+        return \RS\Helper\Tools::teaser($text, $max_len, false);
     }
 
     /**
@@ -2163,13 +2159,13 @@ class Product extends OrmObject
                 $weight = $this['weight'];
             } else {
                 $dir = $this->getMainDir();
-                $weight = ($dir['weight']) ?: ConfigLoader::byModule($this)->default_weight;
+                $weight = ($dir['weight']) ?: \RS\Config\Loader::byModule($this)->default_weight;
             }
         } 
         // Если нужно вернуть результат в конкретной ед. измерения - конвертируем вес из указанной в настройках модуля
         if ($weight_unit !== null) {
             $unit_list = \Catalog\Model\Api::getWeightUnits();
-            $catalog_weight_unit = ConfigLoader::byModule($this)->weight_unit;
+            $catalog_weight_unit = \RS\Config\Loader::byModule($this)->weight_unit;
             $product_unit_ratio = (isset($unit_list[$catalog_weight_unit]['ratio'])) ? $unit_list[$catalog_weight_unit]['ratio'] : 1;
             $output_unit_ratio = (isset($unit_list[$weight_unit]['ratio'])) ? $unit_list[$weight_unit]['ratio'] : 1;
             
@@ -2190,7 +2186,7 @@ class Product extends OrmObject
             case 'forced': return true;
             case 'throughout': return false;
             default: {
-                $shop_config = ConfigLoader::byModule('shop');
+                $shop_config = \RS\Config\Loader::byModule('shop');
                 return ($this->getNum() < 1 && $shop_config['reservation'] && $shop_config['check_quantity']);
             }
         }
@@ -2205,7 +2201,7 @@ class Product extends OrmObject
     */
     function canBeReserved()
     {
-        $shop_config = ConfigLoader::byModule('shop');
+        $shop_config = \RS\Config\Loader::byModule('shop');
         return ($this['reservation'] != 'throughout' && $shop_config['reservation']);
     }
 
@@ -2443,7 +2439,7 @@ class Product extends OrmObject
     */
     function isAvailable()
     {
-        $shop_config = ConfigLoader::byModule('shop');
+        $shop_config = \RS\Config\Loader::byModule('shop');
         if (!$shop_config || !$shop_config['check_quantity']) {
             return true;
         }
@@ -2477,7 +2473,7 @@ class Product extends OrmObject
     function getWarehouseStock()
     {
         if ($this->stock === null){
-          $this->stock = OrmRequest::make()
+          $this->stock = \RS\Orm\Request::make()
                 ->select('X.*')
                 ->from(new \Catalog\Model\Orm\Xstock(),'X')
                 ->join(new \Catalog\Model\Orm\Offer(),'O.id = X.offer_id','O')
@@ -2501,7 +2497,7 @@ class Product extends OrmObject
     function getWarehouseFullStock()
     {
         if ($this->full_stock === null){
-           $this->full_stock = OrmRequest::make()
+           $this->full_stock = \RS\Orm\Request::make()
                 ->select('warehouse_id, SUM(stock)as cnt')
                 ->from(new \Catalog\Model\Orm\Xstock())
                 ->where(array(
@@ -2512,25 +2508,24 @@ class Product extends OrmObject
         }
         return $this->full_stock;  
     }
-
+    
     /**
-     * Возвращает необходимую информацию для отображения остатков по складам на сайте
-     * - список складов
-     * - количество диапазонов остатков
-     *
-     * @param bool $cache - использовать кэш
-     * @return array
-     */
+    * Возвращает необходимую информацию для отображения остатков по складам на сайте
+    * - список складов
+    * - количество диапазонов остатков
+    * 
+    * @return array
+    */
     function getWarehouseStickInfo($cache = true)
     {
         if (!$cache || $this->cache_warehouse_stick === null) {
             $result = array();
 
-            $config = ConfigLoader::byModule($this);
-            $warehouse_api = new WareHouseApi();
+            $config = \RS\Config\Loader::byModule($this);
+            $warehouse_api = new \Catalog\Model\WareHouseApi();
             $warehouse_api->setFilter('public', 1);
 
-            EventManager::fire('product.getwarehouses', array('warehouse_api' => $warehouse_api));
+            \RS\Event\Manager::fire('product.getwarehouses', array('warehouse_api' => $warehouse_api));
 
             //Загружаем все имеющиеся склады
             $result['warehouses'] = $warehouse_api->getList();
@@ -2538,15 +2533,13 @@ class Product extends OrmObject
 
             $this->cache_warehouse_stick = $result;
         }
-
+        
         return $this->cache_warehouse_stick;
     }
 
     /**
      * Возвращает количество складов, на которых доступен товар
-     *
-     * @param integer $offer - Номер комплектации
-     * @param bool $cache - использовать кэш
+     * @param integer $offer Номер комплектации
      * @return integer
      */
     function getAvailableWarehouses($offer = 0, $cache = true)
@@ -2598,7 +2591,7 @@ class Product extends OrmObject
             $result = $files = $file_api->getList();
             
             // Событие для модификации списка файлов
-            $event_result = EventManager::fire('product.files.list', array(
+            $event_result = \RS\Event\Manager::fire('product.files.list', array(
                 'files' => $result,
                 'product' => $this,
                 'access' => $access,
@@ -2662,7 +2655,9 @@ class Product extends OrmObject
             return 'buy';
         }
         
-        //Проверим конкретную комплектацию
+        //Проверим конретную комплектацию
+        $offer = $this['offers']['items'][$offer_sortn];
+        
         if ($this->getNum($offer_sortn) < 1 && $shop_config['reservation']){ //Если нет в наличии и можно заказать
             return 'reservation';   
         }elseif ($this->getNum($offer_sortn) > 0) {

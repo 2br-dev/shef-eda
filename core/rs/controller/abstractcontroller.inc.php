@@ -35,7 +35,8 @@ class AbstractController implements IController
     /** @var Result\Standard $result */
     protected $result;
 
-    private $preset_act = null;
+    private
+        $preset_act = null;
 
     /**
      * Базовый конструктор контроллера. желательно вызывать в конструкторах порожденных классов.

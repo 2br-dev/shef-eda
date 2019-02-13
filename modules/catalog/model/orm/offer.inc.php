@@ -6,41 +6,33 @@
 * @license http://readyscript.ru/licenseAgreement/
 */
 namespace Catalog\Model\Orm;
-
-use Catalog\Model\CurrencyApi;
-use Catalog\Model\WareHouseApi;
-use Photo\Model\Orm\Image;
-use RS\Config\Loader as ConfigLoader;
-use RS\Orm\OrmObject;
-use RS\Orm\Request as OrmRequest;
-use RS\Orm\Type;
-use RS\Site\Manager as SiteManager;
+use \RS\Orm\Type;
 
 /**
 * Комплектация товара. (или товарное предложение)
 */
-class Offer extends OrmObject
+class Offer extends \RS\Orm\OrmObject
 {
     protected static
         $table = "product_offer";
-
+    
     public
         $first_sortn = 0; //Сортировочный индекс, который следует присваивать первой добавляемой комплектации
-
+    
     function _init()
     {
         parent::_init()->append(array(
             'site_id' => new Type\CurrentSite(),
             'product_id' => new Type\Integer(array(
                 'description' => t('ID товара'),
-                'index' => true,
+                'index'=>true,
                 'visible' => false,
             )),
             'title' => new Type\Varchar(array(
                 'description' => t('Название'),
                 'maxLength' => 300,
                 'mainVisible' => false,
-            )),
+            )),            
             'barcode' => new Type\Varchar(array(
                 'description' => t('Артикул'),
                 'maxLength' => 50,
@@ -61,7 +53,7 @@ class Offer extends OrmObject
                 'template' => '%catalog%/form/offer/price_data.tpl',
                 'mainVisible' => false,
             )),
-            'propsdata' => new Type\TinyText(array(
+            'propsdata'  => new Type\TinyText(array(
                 'description' => t('Характеристики комплектации (сериализован)'),
                 'visible' => false,
             )),
@@ -114,9 +106,6 @@ class Offer extends OrmObject
                 'template' => '%catalog%/form/offer/stock_num.tpl',
                 'visible' => true,
                 'mainVisible' => false,
-                'getWarehousesList' => function () {
-                    return WareHouseApi::getWarehousesList();
-                },
             )),
             'photos' => new Type\Varchar(array(
                 'maxLength' => 1000,
@@ -131,7 +120,7 @@ class Offer extends OrmObject
             'sortn' => new Type\Integer(array(
                 'description' => t('Порядковый номер'),
                 'visible' => false,
-            )),
+            )),            
             'unit' => new Type\Integer(array(
                 'description' => t('Единица измерения'),
                 'default' => 0,
@@ -144,11 +133,11 @@ class Offer extends OrmObject
                 'visible' => false
             )),
             'processed' => new Type\Integer(array(
-                'description' => t('Флаг обработанной во время импорта комплектации'),
-                'maxLength' => '2',
-                'visible' => false,
+                        'description' => t('Флаг обработанной во время импорта комплектации'),
+                        'maxLength' => '2',
+                        'visible' => false,
             )),
-            'xml_id' => new Type\Varchar(array(
+            'xml_id' =>  new Type\Varchar(array(
                 'maxLength' => '255',
                 'description' => t('Идентификатор товара в системе 1C'),
                 'visible' => false,
@@ -158,204 +147,202 @@ class Offer extends OrmObject
                 'description' => t('Хэш данных импорта'),
                 'visible' => false
             )),
-            'sku' => new Type\Varchar(array(
+            'sku' =>  new Type\Varchar(array(
                 'maxLength' => 50,
                 'description' => t('Штрихкод'),
                 'mainVisible' => false,
             )),
         ));
-
+        
         $this->addIndex(array('site_id', 'xml_id'), self::INDEX_UNIQUE);
     }
-
+    
     /**
-     * Вызывается после загрузки объекта
-     * @return void
-     */
+    * Вызывается после загрузки объекта
+    * @return void
+    */
     function afterObjectLoad()
     {
         // Развернем фото комплектаций и Если photos_arr не задан
         if (!empty($this['photos']) && !$this->isModified('photos_arr')) {
             $photos = @unserialize($this['photos']);
-            if (is_array($photos) && count($photos) == 1 && !$photos[0]) {
-                $photos = array();
+            if (is_array($photos) && count($photos)==1 && !$photos[0]){
+               $photos = array(); 
             }
             $this['photos_arr'] = $photos ? (array)$photos : array();
         }
-
+        
         // Развернем данные по ценам
         if (!empty($this['pricedata'])) {
             $this['pricedata_arr'] = @unserialize($this['pricedata']) ?: array();
-        } else {
-            if (empty($this['pricedata_arr'])) {
+        }else{
+            if(empty($this['pricedata_arr'])){
                 $this['pricedata_arr'] = array();
             }
         }
-
+        
         //Развернем данные по характеристикам
         if (!empty($this['propsdata'])) {
             $this['propsdata_arr'] = @unserialize($this['propsdata']) ?: array();
         }
-
+        
         //Если это нулевая комплектация, то записываем в аркинул null, чтобы брался артикул товара
         if ($this['sortn'] === "0") {
             $this['barcode'] = null;
         }
-
+        
         // Приведение типов
         $this['num'] = (float)$this['num'];
     }
-
+    
     /**
-     * Функция срабатывает перед записью
-     *
-     * @param string $flag - строка означающая тип действия insert или update
-     * @return void
-     */
+    * Функция срабатывает перед записью 
+    * 
+    * @param string $flag - строка означающая тип действия insert или update
+    */
     function beforeWrite($flag)
     {
         if (!$this->dont_reset_hash) {
             $this['import_hash'] = null; // при любом изменении - сбрасываем хэш
         }
         if ($this['xml_id'] == '') unset($this['xml_id']);
-
+        
         //Поле "photos_named_arr" - виртуальное, используется для импорта CSV, при указании у комплектаций фотографий привязанных к ней.
-        if (isset($this['photos_named_arr']) && count($this['photos_named_arr'])) {
+        if (isset($this['photos_named_arr']) && count($this['photos_named_arr'])){
             $arr = array();
-            foreach ($this['photos_named_arr'] as $filename) { //Переберём и найдём истенные id-шники
-
-                $photo = OrmRequest::make()
-                    ->from(new Image())
+            foreach($this['photos_named_arr'] as $filename){ //Переберём и найдём истенные id-шники
+                
+                $photo = \RS\Orm\Request::make()
+                    ->from(new \Photo\Model\Orm\Image())
                     ->where(array(
-                        'site_id' => SiteManager::getSiteId(),
+                        'site_id' => \RS\Site\Manager::getSiteId(),
                         'type' => 'catalog',
                         'filename' => trim($filename),
                         'linkid' => $this['product_id'],
                     ))
                     ->object();
-                if ($photo) {
+                if ($photo){
                     $arr[] = $photo['id'];
                 }
-
+                
             }
             $this['photos_arr'] = $arr;
         }
-
+        
         //Преобразуем свойства из виртуального свойства _propsdata
         if ($this->isModified('_propsdata')) {
             $this['propsdata_arr'] = $this->convertPropsData($this['_propsdata']);
         }
-
+        
         //Сериализуем необходимые поля
         if ($this->isModified('photos_arr')) {
             $this['photos'] = serialize($this['photos_arr']);
         }
-
+        
         //Если value не установлено - установим 0                                                   
         $this_pricedata_arr = $this['pricedata_arr'];
-        if (isset($this_pricedata_arr['oneprice'])) {
-            if (!isset($this_pricedata_arr['oneprice']['value'])) {
+        if(isset($this_pricedata_arr['oneprice'])){
+            if(!isset($this_pricedata_arr['oneprice']['value'])){
                 $this_pricedata_arr['oneprice']['value'] = 0;
-            }
-        }
-        if (isset($this_pricedata_arr['price'])) {
-            foreach ($this_pricedata_arr['price'] as &$price) {
-                if (!isset($price['value'])) {
+            } 
+        }                                                    
+        if(isset($this_pricedata_arr['price'])){
+            foreach($this_pricedata_arr['price'] as &$price){
+                if(!isset($price['value'])){
                     $price['value'] = 0;
                 }
             }
-        }
+        }     
         $this['pricedata_arr'] = $this_pricedata_arr;
-        if ($this['pricedata_arr'] == null) {
+        if($this['pricedata_arr'] == null){
             $this['pricedata_arr'] = array();
-        }
-        if ($this->isModified('pricedata_arr')) {
+        }   
+        if ($this->isModified('pricedata_arr')){
             $pricedata_arr = $this['pricedata_arr'];
-            if (empty($pricedata_arr['oneprice']['use'])) {
+            if (empty($pricedata_arr['oneprice']['use'])) { 
                 //Удаляем секцию oneprice, если цены заданы индивидуально
                 unset($pricedata_arr['oneprice']);
                 $this['pricedata_arr'] = $pricedata_arr;
-            }
-            $this['pricedata_arr'] = $this->convertValues($this['pricedata_arr']);
+            }            
+            $this['pricedata_arr'] = $this->convertValues($this['pricedata_arr']);            
             $this['pricedata'] = serialize($this['pricedata_arr'] ?: array());
         }
         if ($this->isModified('propsdata_arr')) {
             $this['propsdata'] = serialize($this['propsdata_arr'] ?: array());
         }
-
+        
         //Обновим сортировку у вновь созданной комплектации
         if ($flag != self::UPDATE_FLAG && !$this->isModified('sortn')) {
-            $q = OrmRequest::make()
+            $q = \RS\Orm\Request::make()
                 ->select('MAX(sortn)+1 as next_sort')
                 ->from($this)
                 ->where(array(
                     'product_id' => (int)$this['product_id']
                 ));
-
+                    
             if ($this['xml_id']) { //Если это подкомплектация
-                if (mb_strpos($this['xml_id'], "#") !== false) { //Если это подкомплектация
-                    $this['sortn'] = $q->exec()->getOneField('next_sort', ($this->cml_207_no_offer_params !== null) ? 0 : 1);
-                } else { //Если основная комплектация
-                    $this['sortn'] = 0;
+                if (mb_strpos($this['xml_id'], "#")!==false){ //Если это подкомплектация
+                   $this['sortn'] = $q->exec()->getOneField('next_sort', ($this->cml_207_no_offer_params !== null) ? 0 : 1);
+                }else{ //Если основная комплектация
+                   $this['sortn'] = 0; 
                 }
             } else {
                 $this['sortn'] = $q->exec()->getOneField('next_sort', $this->first_sortn);
             }
-
+            
         }
-
+        
         //Обновим общий остаток комплектации
         if ($this->isModified('stock_num')) {
             $cnt = 0;
             foreach ($this['stock_num'] as $warehouse_id => $stock_num) {
-                $cnt += (float)$stock_num;
+               $cnt += (float) $stock_num; 
             }
             $this['num'] = $cnt;
         }
     }
-
+    
     /**
-     * Функция срабатывает после записи комплектации
-     *
-     * @param string $flag - строка означающая тип действия insert или update
-     */
-    function afterWrite($flag)
-    {
+    * Функция срабатывает после записи комплектации 
+    * 
+    * @param string $flag - строка означающая тип действия insert или update
+    */
+    function afterWrite($flag){
         //Обновим общий остаток комплектации
         if ($this->isModified('stock_num')) {
-            //Очистим остатки по складам
-            OrmRequest::make()
-                ->delete()
-                ->from(new Xstock())
+           //Очистим остатки по складам
+           \RS\Orm\Request::make()
+                ->delete()           
+                ->from(new \Catalog\Model\Orm\Xstock())
                 ->where(array(
                     'offer_id' => $this['id'],
                     'product_id' => $this['product_id'],
                 ))
                 ->exec();
-
-            foreach ($this['stock_num'] as $warehouse_id => $stock_num) {
-                //Добавим остатки по складам  
-                $offer_stock = new Xstock();
-                $offer_stock['product_id'] = $this['product_id'];
-                $offer_stock['offer_id'] = $this['id'];
-                $offer_stock['warehouse_id'] = $warehouse_id;
-                $offer_stock['stock'] = $stock_num;
-                $offer_stock->insert(false, array('stock'), array('product_id', 'offer_id', 'warehouse_id'));
-            }
+           
+           foreach ($this['stock_num'] as $warehouse_id => $stock_num) {
+              //Добавим остатки по складам  
+              $offer_stock = new \Catalog\Model\Orm\Xstock(); 
+              $offer_stock['product_id']   = $this['product_id'];
+              $offer_stock['offer_id']     = $this['id'];
+              $offer_stock['warehouse_id'] = $warehouse_id;
+              $offer_stock['stock']        = $stock_num;
+              $offer_stock->insert(false, array('stock'), array('product_id','offer_id','warehouse_id'));
+           }
         }
     }
-
+    
     /**
-     * Конвертирует формат сведений о характеристиках комплектации
-     *
-     * @param array $_propsdata ['key' => [ключ1, ключ2,...],  'value' => [значение1, значение2, ...]]
-     * @return array ['ключ1' => 'значение1', 'ключ2' => 'значение2',...]
-     */
+    * Конвертирует формат сведений о характеристиках комплектации
+    * 
+    * @param array $_propsdata ['key' => [ключ1, ключ2,...],  'value' => [значение1, значение2, ...]]
+    * @return array ['ключ1' => 'значение1', 'ключ2' => 'значение2',...]
+    */
     function convertPropsData($_propsdata)
     {
         $props_data_arr = array();
         if (!empty($_propsdata)) {
-            foreach ($_propsdata['key'] as $n => $val) {
+            foreach($_propsdata['key'] as $n => $val) {
                 if ($val !== '') {
                     $props_data_arr[$val] = $_propsdata['val'][$n];
                 }
@@ -363,170 +350,172 @@ class Offer extends OrmObject
         }
         return $props_data_arr;
     }
-
+    
     /**
-     * Конвертирует валюты в комплектациях
-     *
-     * @param array $pricedata секция pricedata из offers
-     * @return array возвращает тот же с массив, только с добавленной секцией value
-     */
+    * Конвертирует валюты в комплектациях
+    * 
+    * @param array $pricedata секция pricedata из offers
+    * @return array возвращает тот же с массив, только с добавленной секцией value
+    */
     function convertValues(array $pricedata)
     {
         if (!$pricedata) return $pricedata;
-
+                                                 
         if (!empty($pricedata['oneprice'])) {
             //Задана одна цена на все типы цен
             $pricedata['oneprice']['value'] = @$pricedata['oneprice']['original_value'];
-            if (isset($pricedata['oneprice']['unit'])) {
+            if(isset($pricedata['oneprice']['unit'])){
                 if ($pricedata['oneprice']['unit'] != '%') {
-                    $source_curr = Currency::loadSingle($pricedata['oneprice']['unit']);
+                    $source_curr = \Catalog\Model\Orm\Currency::loadSingle($pricedata['oneprice']['unit']);
                     if ($source_curr['id']) {
-                        $pricedata['oneprice']['value'] = CurrencyApi::convertToBase($pricedata['oneprice']['original_value'], $source_curr);
+                        $pricedata['oneprice']['value'] = \Catalog\Model\CurrencyApi::convertToBase($pricedata['oneprice']['original_value'], $source_curr);
                     }
                 }
             }
         } else {
             //Для каждой цены задано персональное значение
-            if (!empty($pricedata['price'])) {
-                foreach ($pricedata['price'] as $cost_id => &$data) {
+            if(!empty($pricedata['price'])){
+                foreach($pricedata['price'] as $cost_id => &$data) {
                     $data['value'] = @$data['original_value'];
-                    if (isset($data['unit'])) {
+                    if(isset($data['unit'])){
                         if ($data['unit'] != '%') {
-                            $source_curr = Currency::loadSingle($data['unit']);
+                            $source_curr = \Catalog\Model\Orm\Currency::loadSingle($data['unit']);
                             if ($source_curr['id']) {
-                                $data['value'] = CurrencyApi::convertToBase($data['original_value'], $source_curr);
+                                $data['value'] = \Catalog\Model\CurrencyApi::convertToBase($data['original_value'], $source_curr);
                             }
                         }
-                    }
+                    }                
                 }
-            }
+            }    
         }
         return $pricedata;
-    }
-
+    }    
+    
     /**
-     * Загружает остатки по складам для комплектации
-     *
-     * @return array
-     */
+    * Загружает остатки по складам для комплектации
+    * 
+    * @return array
+    */
     function fillStockNum()
     {
-        $this['stock_num'] = OrmRequest::make()
-            ->from(new Xstock)
+        $this['stock_num'] = \RS\Orm\Request::make()
+            ->from(new \Catalog\Model\Orm\Xstock)
             ->where(array(
                 'product_id' => $this['product_id'],
                 'offer_id' => $this['id']
             ))->exec()->fetchSelected('warehouse_id', 'stock');
-
+            
         return $this['stock_num'];
     }
 
     function getStocks()
     {
-        return OrmRequest::make()
-            ->from(new Xstock)
+        return \RS\Orm\Request::make()
+            ->from(new \Catalog\Model\Orm\Xstock)
             ->where(array(
                 'product_id' => $this['product_id'],
                 'offer_id' => $this['id']
             ))->exec()->fetchSelected('warehouse_id');
     }
-
+    
     /**
-     * Возвращает JSON с параметрами комплектаций
-     *
-     * @return string
-     */
+    * Возвращает JSON с параметрами комплектаций
+    * 
+    * @return string
+    */
     function getPropertiesJson()
     {
         $result = array();
         if (is_array($this['propsdata_arr'])) {
-            foreach ($this['propsdata_arr'] as $key => $value) {
+            foreach($this['propsdata_arr'] as $key => $value) {
                 $result[] = array($key, $value);
             }
         }
         return json_encode($result);
     }
-
+    
     /**
-     * Возвращает JSON с остатками на складах для данной комплектации
-     * @return array
-     */
+    * Возвращает JSON с остатками на складах для данной комплектации
+    * @return array
+    */
     function getStickJson()
     {
         return json_encode($this['sticks'] ?: array());
     }
-
+    
     /**
-     * Получает массив из ID фото комплектации
-     *
-     * @return string
-     */
+    * Получает массив из ID фото комплектации
+    *
+    * @return string
+    */
     function getPhotosJson()
     {
         return json_encode((array)$this['photos_arr']);
     }
-
+    
     /**
-     * Получает id главной(первой отмеченной) фотографии у товара или false
-     *
-     */
-    function getMainPhotoId()
-    {
-        if (!empty($this['photos_arr'])) {
-            return $this['photos_arr'][0];
-        }
-        return false;
+    * Получает id главной(первой отмеченной) фотографии у товара или false
+    * 
+    */
+    function getMainPhotoId(){
+       if (!empty($this['photos_arr'])){
+         return $this['photos_arr'][0];  
+       }
+       return false;
     }
 
     /**
-     * Получает ID фото комплектации через разделитель
-     *
-     * @param string $glue - символ склейки
-     * @return string
-     */
+    * Получает ID фото комплектации через разделитель
+    * 
+    * @param string $glue - символ склейки
+    * @return string
+    */    
     function getImplodePhotos($glue = ',')
     {
         return implode($glue, (array)$this['photos_arr']);
     }
-
+    
+    
     /**
-     * Возвращает объект единицы измерения, в котором измеряется данный продукт
-     *
-     * @param string $property - имя свойства объекта Unit. Используется для быстрого обращения
-     * @return Unit
-     */
+    * Возвращает объект единицы измерения, в котором измеряется данный продукт
+    * 
+    * @param string $property - имя свойства объекта Unit. Используется для быстрого обращения
+    * @return Unit
+    */
     function getUnit($property = null)
     {
-        $unit_id = $this['unit'] ?: ConfigLoader::byModule($this)->default_unit;
+        $unit_id = $this['unit'] ?: \RS\Config\Loader::byModule($this)->default_unit;
         $unit = new Unit($unit_id);
         return ($property === null) ? $unit : $unit[$property];
     }
-
+    
     /**
-     * Возвращает объект товара, которому принадлежит комплектация
-     *
-     * @return Product
-     */
+    * Возвращает объект товара, которому принадлежит комплектация
+    * 
+    * @return Product
+    */
     function getProduct()
     {
         return new Product($this['product_id']);
     }
-
+    
     /**
-     * Возвращает следующий по порядку артикул для комплектации
-     *
-     * @param string $prefix
-     * @return string
-     */
+    * Возвращает следующий по порядку артикул для комплектации
+    * 
+    * @param string $prefix
+    * @return string
+    */
     function setNextBarcode($prefix = '')
     {
-        $next = OrmRequest::make()
-            ->from($this)
-            ->where(array(
-                'product_id' => $this['product_id']
-            ))->count() + 1;
-
-        $this['barcode'] = $prefix . $next;
+        $next = \RS\Orm\Request::make()
+                    ->from($this)
+                    ->where(array(
+                        'product_id' => $this['product_id']
+                    ))->count() + 1;
+        
+        $this['barcode'] = $prefix.$next;
         return $this['barcode'];
     }
+
 }
+

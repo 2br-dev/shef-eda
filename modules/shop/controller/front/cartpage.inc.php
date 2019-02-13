@@ -135,7 +135,7 @@ class CartPage extends \RS\Controller\Front
         if ($order_num){ //Если заказ найден, повторим его и переключимся в корзину
             $this->getCart()->repeatCartFromOrder($order_num);
         }
-        $this->redirect($this->router->getUrl('shop-front-cartpage'));
+      /*   $this->redirect($this->router->getUrl('shop-front-cartpage')); */
     }
     
     /**
