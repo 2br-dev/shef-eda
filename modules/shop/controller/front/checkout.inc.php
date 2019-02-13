@@ -179,7 +179,7 @@ class Checkout extends Front
                 if (in_array($this->order['user_type'], array('person', 'company'))) {
 
                     $new_user = new User();
-                    $allow_fields = array('reg_name', 'reg_surname', 'reg_midname', 'reg_fio', 'reg_phone', 'reg_e_mail', 'reg_openpass', 'reg_company', 'reg_company_inn');
+                    $allow_fields = array('reg_name', 'reg_surname', 'reg_midname', 'reg_phone', 'reg_e_mail', 'reg_openpass', 'reg_company', 'reg_company_inn');
                     $reg_fields = array_intersect_key($this->order->getValues(), array_flip($allow_fields));
 
                     $new_user->getFromArray($reg_fields, 'reg_');
@@ -400,7 +400,7 @@ class Checkout extends Front
                     $this->order->addExtraKeyPair('delivery_extra', $delivery_extra);
                 }
 
-                if ($delivery->getTypeObject()->isMyselfDelivery()) { //Если самовывоз и складов больше одного
+                if ($delivery['class'] == 'myself') { //Если самовывоз и складов больше одного
                     $this->app->redirect($this->router->getUrl('shop-front-checkout', array('Act' => 'warehouses')));
                 } else {
                     $this->app->redirect($this->router->getUrl('shop-front-checkout', array('Act' => 'payment')));

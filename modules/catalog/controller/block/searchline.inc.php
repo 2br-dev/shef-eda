@@ -34,8 +34,8 @@ class SearchLine extends StandartBlock
             'searchCategoryLimit' => 1,
             'hideAutoComplete' => 0,
             'indexTemplate' => 'blocks/searchline/searchform.tpl',
-            'imageWidth' => 62,
-            'imageHeight' => 62,
+            'imageWidth' => 100,
+            'imageHeight' => 100,
             'imageResizeType' => 'xy',
             'order_field' => self::SORT_RELEVANT,
             'order_direction' => 'asc'
@@ -162,7 +162,7 @@ class SearchLine extends StandartBlock
                     $result_json[] = array(
                         'value' => $product['title'],
                         'label' => preg_replace("#($query)#iu", '<b>$1</b>', $product['title']),
-                        'barcode' => preg_replace("#($query)#iu", '<b>$1</b>', $product['barcode']),
+         /*                'barcode' => preg_replace("#($query)#iu", '<b>$1</b>', $product['barcode']), */
                         'brand' => (string)$product->getBrand()->title,
                         'image' => $product->getMainImage()->getUrl($this->getParam('imageWidth'), $this->getParam('imageHeight'), $this->getParam('imageResizeType')),
                         'price' => $price,

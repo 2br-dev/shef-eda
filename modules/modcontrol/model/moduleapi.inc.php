@@ -55,8 +55,8 @@ class ModuleApi
 
         usort($table_rows, function($a, $b) use ($sort) {
             switch($sort) {
-                case ModuleApi::SORT_BY_MODULE_NAME: $field = 'name'; break;
-                case ModuleApi::SORT_BY_MODULE_ID: $field = 'class'; break;
+                case self::SORT_BY_MODULE_NAME: $field = 'name'; break;
+                case self::SORT_BY_MODULE_ID: $field = 'class'; break;
                 default: return 0;
             }
 

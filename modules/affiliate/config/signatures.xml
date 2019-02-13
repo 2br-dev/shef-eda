@@ -2,7 +2,7 @@
 <signatures>
   <file>
     <path>config/changelog.txt</path>
-    <sign>64b2646261c38143ad0189ef821af56dab5f7883</sign>
+    <sign>ceef9b48b88f31d2cb92de94a93121923c2beac0</sign>
   </file>
   <file>
     <path>config/demo/affiliate.csv</path>
@@ -14,7 +14,7 @@
   </file>
   <file>
     <path>config/handlers.inc.php</path>
-    <sign>556b3c0ff3d3213f218216e912258f495d785a38</sign>
+    <sign>e1cf7c31b4e11b344c506c7859a2f12f57050cff</sign>
   </file>
   <file>
     <path>config/install.inc.php</path>
@@ -22,7 +22,7 @@
   </file>
   <file>
     <path>config/module.xml</path>
-    <sign>7e5bd9d029c5d0089383143ed58d851ae57fa295</sign>
+    <sign>5698a38172e24c51760ed5b64ec0b3880c0b0537</sign>
   </file>
   <file>
     <path>controller/admin/ctrl.inc.php</path>
@@ -74,7 +74,7 @@
   </file>
   <file>
     <path>model/orm/affiliate.inc.php</path>
-    <sign>e9ff3d44ce205351bc8d2376c91773ec2723d8b5</sign>
+    <sign>444f92f04a6e7c2458b7cc942bfd15277375c831</sign>
   </file>
   <file>
     <path>view/admin_help.tpl</path>
@@ -144,5 +144,5 @@
     <path>view/tree_column.tpl</path>
     <sign>bc46903fcfc70bda20c3d00bda52d3e0c9b44795</sign>
   </file>
-  <masterSign>91e18206336f9e860351ffb4f963dd8a3769e3b1ba8d540cf8747727d7c5aadb855615e9f5ef428c70c0a93026c653cb76f17aa85183c3b29e3046e89eb47ca22eaa970615e5dda7df53651ee35102dbc48b877f42d7ba358f30f7563b186ef0da4df171102c0bb6ad9d662a27f93507ae218d0cf5de0f35daa420b80419e44b</masterSign>
+  <masterSign>31440a8975088515457b6268d9c83c26ce28443704b7a113eaa58607b38c6742c793d874a2a145b6648c03fdada3231c2ae35857991c6b77e232ec773b65f5d2f4124588988f4b39bf3a2d3db560b23cf650421a5412c48a00df75490cd85c2c2e2751c1b7b6e23699115d9656e2a9dd51ee7ccb0b7c16f28cf9de61824d948c</masterSign>
 </signatures>

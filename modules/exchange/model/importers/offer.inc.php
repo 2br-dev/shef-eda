@@ -12,7 +12,7 @@ use Catalog\Model\Orm\Offer as ProductOffer;
 use Catalog\Model\Orm\Product;
 use Catalog\Model\Orm\Typecost;
 use Catalog\Model\Orm\Unit;
-use Catalog\Model\Orm\WareHouse as OrmWareHouse;
+use Catalog\Model\Orm\WareHouse;
 use Catalog\Model\WareHouseApi;
 use Exchange\Model\Log;
 use Exchange\Model\Importers\CatalogProduct as ImporterCatalogProduct;
@@ -369,7 +369,7 @@ class Offer extends AbstractImporter
     {
         if (!isset($_SESSION[ImporterWarehouse::SESS_KEY_WAREHOUSE_IDS][$xml_id])) {
             $id = OrmRequest::make()
-                ->from(new OrmWareHouse())
+                ->from(new WareHouse())
                 ->where(array(
                     'site_id' => SiteManager::getSiteId(),
                     'xml_id' => $xml_id,

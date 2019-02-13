@@ -1,2 +1,2 @@
 User-agent: *
-Host: readyscripttest
+Host: shef-eda.local

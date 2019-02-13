@@ -13,7 +13,7 @@
             <a class="add-property underline va-m-c"><i class="zmdi zmdi-plus m-r-5"></i> <span>{t}Добавить характеристику{/t}</span></a>
             <span class="success-text">{t}Характеристика успешно добавлена{/t}</span>
         </div>
-        {include file="property_form.tpl" value_types=$field->callPropertyFunction('getPropertyItemAllowTypeData')}
+        {include file="property_form.tpl"}
     </div>
     <div class="floatwrap">
         <a class="set-self-val underline va-m-c">
@@ -26,5 +26,5 @@
         {foreach $elem->getPropObjects() as $key => $group}
             {include file="property_group_product.tpl" group=$group}
         {/foreach}
-    </table>
+    </table>    
 </div>

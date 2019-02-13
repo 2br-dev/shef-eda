@@ -13,7 +13,7 @@ return array (
   'DB_HOST' => '127.0.0.1',
   'DB_PORT' => NULL,
   'DB_SOCKET' => NULL,
-  'DB_NAME' => 'shef-eda',
+  'DB_NAME' => 'eda',
   'DB_USER' => 'root',
   'DB_PASS' => '',
   'DB_TABLE_PREFIX' => 'md_',

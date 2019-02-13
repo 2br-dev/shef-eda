@@ -2,7 +2,7 @@
 <signatures>
   <file>
     <path>config/changelog.txt</path>
-    <sign>f29486b0a25d381b36ae27206c192c8dcead8fef</sign>
+    <sign>d2272fb0c8baa043054aa7baf764432ac16cb8dc</sign>
   </file>
   <file>
     <path>config/delivery/cdek/cdek_kaz.csv</path>
@@ -46,7 +46,7 @@
   </file>
   <file>
     <path>config/module.xml</path>
-    <sign>f5b466dd7257031bbcd8b3abf6b68fbcba4026cd</sign>
+    <sign>956d890839a4f748c7e33e55209e6cfbb32279b3</sign>
   </file>
   <file>
     <path>config/modulerights.inc.php</path>
@@ -174,7 +174,7 @@
   </file>
   <file>
     <path>controller/front/checkout.inc.php</path>
-    <sign>5392edae3a55f5e8fa9665bafa8c8fa4dd7082a7</sign>
+    <sign>8efcfa0a57ad0a288f338765a59499bbf2ad6579</sign>
   </file>
   <file>
     <path>controller/front/documents.inc.php</path>
@@ -230,7 +230,7 @@
   </file>
   <file>
     <path>model/cart.inc.php</path>
-    <sign>da64335b5a601e6f3b02e4757ee3f042d97eaff1</sign>
+    <sign>d8a243cd43ee0fd13fceca32363e6cecc3192e75</sign>
   </file>
   <file>
     <path>model/cashregisterapi.inc.php</path>
@@ -298,7 +298,7 @@
   </file>
   <file>
     <path>model/deliveryapi.inc.php</path>
-    <sign>7766820108b9520dea8a901fe7d73e1193c4eb04</sign>
+    <sign>44584f32c96d4bd64609ad655112ae473163c2ad</sign>
   </file>
   <file>
     <path>model/deliverydirapi.inc.php</path>
@@ -802,7 +802,7 @@
   </file>
   <file>
     <path>model/printform/abstracttorgform.inc.php</path>
-    <sign>1b0737f6c0523e5fd920edf1d46743fd5cd77585</sign>
+    <sign>deeb55fc06ce071c81d67ad70ac7ea56509afb88</sign>
   </file>
   <file>
     <path>model/printform/commoditycheck.inc.php</path>
@@ -1676,5 +1676,5 @@
     <path>view/widget/sellchart.tpl</path>
     <sign>39ebc9e5d6c50174474249095c43ac16b447b0f4</sign>
   </file>
-  <masterSign>3115f19ada1c1940cadbc6e3e8f0105c922548beb64a9a46371f127865771a46d374b98617406761f66775e6d876789019fd20b13012c5d834ef019146dfc2e2de69b8d9f0fa371b2c92642e517b9840c27f404d73798c758d0d0a39dfa961952c89e013552ebde3de693cfd6202055af358beee99c8a13fe3ba8657832bf596</masterSign>
+  <masterSign>1207b42e41ddfe16241e5f4977af143a29136f2e25e1a239c2716693d96b2057aef7153f3098cbac14a65e24203c503575058c64cac1c2985f8b8bd18e14709cda423e2fc84ebc6a5b502f2096d05796dd1daa4f728fc348c72c3a2b0d05dfbae17e064019f08742ce3d61516ac9f07e9dec73050a8199612b34a76e2a6b047f</masterSign>
 </signatures>

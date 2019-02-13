@@ -142,11 +142,11 @@
   </file>
   <file>
     <path>core/rs/config/abstractsetup.inc.php</path>
-    <sign>23df6bc0565d26fe2d5c7631f8d849311e30169d</sign>
+    <sign>d662abb07c8399b33bf3d1c817d2f5b399501d21</sign>
   </file>
   <file>
     <path>core/rs/config/changelog.txt</path>
-    <sign>fcdfeaa2fa956ed919370c669af8152aa3dd4775</sign>
+    <sign>70047e7ff75ae4f8406cc1199a01e6a5fb69ae91</sign>
   </file>
   <file>
     <path>core/rs/config/cms.inc.php</path>
@@ -182,7 +182,7 @@
   </file>
   <file>
     <path>core/rs/controller/abstractcontroller.inc.php</path>
-    <sign>b68334e33ca1a4242e246459dfbd83f6896a3362</sign>
+    <sign>97489e2a2bfc95a4704bfc9ac25e88bdc5b5e9dd</sign>
   </file>
   <file>
     <path>core/rs/controller/abstractmodule.inc.php</path>
@@ -3602,7 +3602,7 @@
   </file>
   <file>
     <path>resource/js/jquery.rs.autotranslit.js</path>
-    <sign>1c697ed90f17010a6679e7cf361060ce4e7fa9df</sign>
+    <sign>76714030e2268244efcd3ed2a38014406aba02f1</sign>
   </file>
   <file>
     <path>resource/js/jquery.rs.debug.js</path>
@@ -5276,5 +5276,5 @@
     <path>templates/system/meta.tpl</path>
     <sign>45c15da755d31936fcef16412a9a80591839e57b</sign>
   </file>
-  <masterSign>4d42974cb2f33d09e44fe82327cc86a206d3b9aad40dd2e708cfcb005974695ed914fccdecc393120111673ac92aefa35a411d1c098f4b75e658263683f7750cebab6016209b4780f463e9c6a0c0c04429c8baad83f504a45dd5b309f5f883932d3437dbc961e9fb924b07c7523b24a28b8046d195796a9b8d85266792217245</masterSign>
+  <masterSign>8f04457cf32983815c182a16bd6ee4d05ecf09db7086d3c3a350f8ecaaf5fbfd7dcd09ebd5875c83c53d1173cc36a49296c1064f9d7f2e060f40b9577ce051db022e70f2b31c8b287100c4adad258a1f2744bbdaecd69db729269513605e23effd670ac2d9527cb9ce816de19b67b81346a6d2f42da0bbfba06f1501f2e9baa5</masterSign>
 </signatures>

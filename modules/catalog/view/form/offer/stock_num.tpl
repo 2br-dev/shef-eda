@@ -1,4 +1,5 @@
-{$warehouses = $field->callPropertyFunction('getWarehousesList')}
+{static_call var=warehouses callback=['\Catalog\Model\WareHouseApi', 'getWarehousesList']}
+
 {$config = ConfigLoader::byModule('catalog')}
 <div class="table-mobile-wrapper no-bottom-border">
     {if $config.inventory_control_enable}

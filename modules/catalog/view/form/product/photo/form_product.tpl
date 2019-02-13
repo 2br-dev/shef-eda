@@ -1,3 +1,4 @@
+{static_call var="catalog" callback=['\RS\Module\Item', 'getResourceFolders'] params=['catalog']}
 {addcss file="{$mod_css}photoblock.css?v=2" basepath="root"}
 
 {addcss file="common/lightgallery/css/lightgallery.min.css" basepath="common"}

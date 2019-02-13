@@ -37,8 +37,8 @@ abstract class AbstractTorgForm extends AbstractPrintForm
             $address = $this->order->getAddress();
             $delivery = $this->order->getDelivery();
 
-            if (!isset($address->city)){  //если доставка самовывоз, и свой адрес пользователь не вводил
-                if ($delivery->getTypeObject()->isMyselfDelivery()) {  // для расчета ставки налога использовать регион(Город) из доставки
+            if (!isset($address->city)){               //если доставка самовывоз, и свой адрес пользователь не вводил
+                if ($delivery['class'] == 'myself') {  // для расчета ставки налога использовать регион(Город) из доставки
                     $city_id = $delivery->getTypeObject()->getOption('myself_addr');
                     if ($delivery_address = \Shop\Model\AddressApi::getAddressByCityid($city_id)) {
                         $address = $delivery_address;

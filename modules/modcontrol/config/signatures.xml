@@ -2,7 +2,7 @@
 <signatures>
   <file>
     <path>config/changelog.txt</path>
-    <sign>6c82ebe628905351f53cc4a2857bb16176ad71a6</sign>
+    <sign>70543b3c494ce9d2353f517f759ab1f351ceb664</sign>
   </file>
   <file>
     <path>config/file.inc.php</path>
@@ -14,7 +14,7 @@
   </file>
   <file>
     <path>config/module.xml</path>
-    <sign>7e5d1898b4fb5df95a8f8670742cc40c94574601</sign>
+    <sign>d2c94f82ae590936af845febdff019ba75fa30ae</sign>
   </file>
   <file>
     <path>controller/admin/control.inc.php</path>
@@ -22,7 +22,7 @@
   </file>
   <file>
     <path>model/moduleapi.inc.php</path>
-    <sign>21e29e3fef6b040059949d722a9902a5a30549ff</sign>
+    <sign>a8002222777e21f93f71c93dabffaf6ac4c76b88</sign>
   </file>
   <file>
     <path>view/add.tpl</path>
@@ -72,5 +72,5 @@
     <path>view/show_changelog.tpl</path>
     <sign>3d09a9366e20b5570ed2526d74b8f53e6da85ba0</sign>
   </file>
-  <masterSign>af0c16c636ad297d05636a98c21ed31149630dd82f818b1e799f6984b25f9df74f032be5b8be51182fd3e2e6f0811b00463295297f13d46941797ffb4bd79caa62987c13f83227270c2fd62d78d9ec400f91636c8d6790a82e0910971e830c57bdf0c3d7bceeb784369d303d615af02d0afa31d94154d9f586e3fa4c7e0a5503</masterSign>
+  <masterSign>420eeaa0f2028b6f5b214ded48cb73951a617e999db229c887912a65e4d698ae80a4e1d3be3bbc721e8ed339b0c0e9cd8d041a6591c87dc18f6301fa746bd2590e759874ce4149825cbad80371170295725004935852e7f4c8ea76badfcc3238d549b3cacb4759779d0cc633ecaf89ae87faa3761ebc2af77b7aeeac3b0301b8</masterSign>
 </signatures>

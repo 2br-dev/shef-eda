@@ -113,9 +113,6 @@ class Handlers extends HandlerAbstract
                     'mevisible' => false,
                     'meTemplate' =>  '%catalog%/form/product/menum.tpl',
                     'description' => t('Доступно'),
-                    'getWarehousesList' => function () {
-                        return WareHouseApi::getWarehousesList();
-                    },
                 )),
             ));
         }
